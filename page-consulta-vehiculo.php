@@ -3,7 +3,6 @@
 Template Name: Consulta Vehiculo Template
 */
 
-// --- Lógica PHP (Similar al bloque ACF, pero sin parámetros de bloque) ---
 
 // Seguridad y Obtención de Datos
 $id_vehiculo_url = isset($_GET['id_vehiculo']) ? sanitize_text_field($_GET['id_vehiculo']) : null;
@@ -181,19 +180,18 @@ get_header();
 
             ?>
                 <div class="datos-vehiculo-wrapper">
-                    <?php // <-- Eliminado style="padding: 20px;" ?>
+                   
                     <h2>Información del Vehículo: <?php echo esc_html($datos_vehiculo['titulo'] ?? $id_vehiculo_url); ?></h2>
 
                     <p><strong>Modelo Vehículo:</strong> <?php echo esc_html($datos_vehiculo['modelo_vehiculo']); ?></p>
                     <p><strong>Nº Bastidor:</strong> <?php echo esc_html($datos_vehiculo['bastidor']); ?></p>
                     <p><strong>Fecha Transformación:</strong> <?php echo esc_html($datos_vehiculo['fecha_transformacion']); ?></p>
-                    <?php // Añadir aquí cualquier otro campo simple que tengas... ?>
+                    
 
                     <hr>
                     <h3>Equipamiento Instalado</h3>
 
                     <?php
-                    // Mostrar cada grupo de equipamiento usando la función definida arriba
                     mostrar_grupo_equipamiento('Puente de Luces', $datos_vehiculo['puente_luces']);
                     mostrar_grupo_equipamiento('Relés', $datos_vehiculo['reles']);
                     mostrar_grupo_equipamiento('Rotulación', $datos_vehiculo['rotulacion']);
@@ -202,125 +200,12 @@ get_header();
                     mostrar_grupo_equipamiento('Kit de Detenidos', $datos_vehiculo['kit_detenidos']);
                     mostrar_grupo_equipamiento('Altavoz', $datos_vehiculo['altavoz']);
                     mostrar_grupo_equipamiento('Amplificador', $datos_vehiculo['amplificador']);
-                    // mostrar_grupo_equipamiento('Emisora', $datos_vehiculo['emisora']); // <-- Llamada comentada si el campo no se obtiene arriba
                     mostrar_grupo_equipamiento('Otros', $datos_vehiculo['otros']);
                     ?>
-<?php
 
-$args = [
-    'post_type'  => 'piezas_rotulacion',
-    'meta_query' => [
-        [
-            'key'   => 'vehiculo_asociado',
-            'value' => $id_vehiculo_url,
-            'compare' => '='
-        ]
-    ]
-];
+                    
 
-error_log('Args de WP_Query: ' . print_r($args, true));
-
-$query = new WP_Query($args);
-
-if ($query->have_posts()) :
-    echo '<h3>Piezas Disponibles para el Vehículo</h3>';
-    echo '<ul>';
-    while ($query->have_posts()) : $query->the_post();
-        echo '<li>' . get_the_title() . '</li>';
-    endwhile;
-    echo '</ul>';
-    wp_reset_postdata();
-else :
-    echo '<p>No hay piezas asociadas a este vehículo.</p>';
-endif;
-
-$piezas_query = new WP_Query($args);
-
-if ($piezas_query->have_posts()) {
-    while ($piezas_query->have_posts()) {
-        $piezas_query->the_post();
-        $vehiculo_asociado = get_post_meta(get_the_ID(), 'vehiculo_asociado', true);
-
-        // Mostrar el valor asociado
-        error_log('Vehículo asociado en esta pieza: ' . $vehiculo_asociado);
-    }
-} else {
-    error_log('No se encontraron piezas asociadas.');
-}
-?>
-                    <hr>
-                    <h3>Piezas Disponibles para el Vehículo</h3>
-
-                    <?php
-                    // Obtener el croquis y las piezas asociadas
-                    $args = [
-                        'post_type'  => 'piezas_rotulacion',
-                        'meta_query' => [
-                            [
-                                'key'     => 'vehiculo_asociado', // Relación con el vehículo
-                                'value'   => $id_vehiculo_url,
-                                'compare' => '='
-                            ]
-                        ]
-                    ];
-
-                    $query = new WP_Query($args);
-
-                    if ($query->have_posts()) :
-                        // Obtener el croquis del vehículo (asumimos que es del primer post encontrado)
-                        $query->the_post();
-                        $croquis_piezas = get_field('croquis_piezas'); // Croquis general
-                        rewind_posts();
-
-                        if ($croquis_piezas) :
-                    ?>
-                            <div class="croquis-container">
-                                <h3>Selecciona las piezas en el croquis</h3>
-                                <img src="<?php echo esc_url($croquis_piezas['url']); ?>" alt="Croquis del Vehículo" class="croquis-imagen">
-
-                                <div class="piezas-overlay">
-                                    <?php
-                                    while ($query->have_posts()) : $query->the_post();
-                                        $codigo_pieza = get_field('codigo_pieza');
-                                        $codigo_pieza = get_field('codigo_pieza');
-                                    ?>
-                                        <div class="pieza" style="left: ?>%;">
-                                            <input type="checkbox" id="pieza_<?php echo esc_attr($codigo_pieza); ?>" name="piezas[]" value="<?php echo esc_attr($codigo_pieza); ?>">
-                                            <label for="pieza_<?php echo esc_attr($codigo_pieza); ?>">
-                                                <?php echo esc_html($codigo_pieza); ?>
-                                            </label>
-                                        </div>
-                                    <?php endwhile; ?>
-                                </div>
-                            </div>
-                        <?php
-                        endif;
-
-                        wp_reset_postdata();
-                    else :
-                        echo '<p>No hay piezas asociadas a este vehículo.</p>';
-                    endif;
-                    ?>
-
-                    <form id="form-seleccion-piezas" action="https://condisatransformaciones.com/procesar-pedido" method="POST">
-                        <input type="hidden" name="id_vehiculo" value="<?php echo esc_attr($id_vehiculo_url); ?>">
-                        <button type="submit">Solicitar Piezas Seleccionadas</button>
-                    </form>
-
-                    <?php
-                        $piezas_asociadas = get_field('piezas_asociadas', $vehiculo_post_id); // ID del vehículo transformado
-
-                        if ($piezas_asociadas) :
-                            echo '<h3>Piezas Disponibles para el Vehículo</h3>';
-                            echo '<ul>';
-                            foreach ($piezas_asociadas as $pieza) :
-                                echo '<li>' . get_the_title($pieza) . ' - $' . get_field('precio_pieza', $pieza) . '</li>';
-                            endforeach;
-                            echo '</ul>';
-                        else :
-                            echo '<p>No hay piezas asociadas a este vehículo.</p>';
-                        endif;
-                        ?>
+                    
                 </div>
             <?php
             } // Fin del else ($mostrar_datos)
