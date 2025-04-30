@@ -62,6 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['consulta_vehiculo_non
                     'altavoz' => get_field('equip_altavoz', $vehiculo_post_id),
                     'amplificador' => get_field('equip_amplificador', $vehiculo_post_id),
                     'otros' => get_field('equip_otros', $vehiculo_post_id),
+                    'imagen_interactiva' => get_field('imagen_interactiva', $vehiculo_post_id),
+                    'formulario_seleccion' => get_field('formulario_seleccion', $vehiculo_post_id),
                     // 'emisora' => get_field('equip_emisora', $vehiculo_post_id), // <-- ¿Falta este?
                 ];
             } else {
@@ -203,7 +205,13 @@ get_header();
                     mostrar_grupo_equipamiento('Otros', $datos_vehiculo['otros']);
                     ?>
 
-                    
+                    <hr>
+                    <h3>Reposición de piezas de rotulación</h3>
+                    <?php if (!empty($datos_vehiculo['imagen_interactiva'])) : ?>
+                        <div class="imagen-interactiva">
+                            <?php echo $datos_vehiculo['imagen_interactiva']; // Mostrar el código generado por Image Map Pro ?>
+                        </div>
+                    <?php endif; ?>                  
 
                     
                 </div>

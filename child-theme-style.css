@@ -34,36 +34,6 @@
     border-radius: 5px;
 }
 
-/* --- Contenedor Principal con Flexbox --- */
-.image-map-container {
-    display: flex;
-    align-items: flex-start; /* Alinea el formulario al inicio de la imagen */
-    gap: 20px; /* Espacio entre la imagen y el formulario */
-    flex-wrap: wrap; /* Línea nueva si el espacio es insuficiente */
-}
-
-/* --- Imagen de Image Map Pro --- */
-.image-map {
-    flex: 1 1 60%; /* La imagen ocupará el 60% del ancho disponible */
-    max-width: 600px; /* Tamaño máximo para la imagen */
-    border: 1px solid var(--border-light); /* Borde opcional para la imagen */
-    border-radius: 4px; /* Bordes redondeados */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.07); /* Sombra para destacar */
-    overflow: hidden; /* Asegura que los bordes redondeados funcionen */
-}
-
-/* --- Formulario a la Derecha --- */
-.consulta-vehiculo-wrapper {
-    flex: 1 1 35%; /* El formulario ocupará el 35% del ancho disponible */
-    max-width: 400px; /* Tamaño máximo del formulario */
-    margin: 0; /* Sin margen adicional */
-    padding: 1.5em; /* Padding interno */
-    border: 1px solid var(--border-light); /* Borde alrededor del formulario */
-    background-color: var(--background-main); /* Fondo blanco */
-    border-radius: 4px; /* Bordes redondeados */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.07); /* Sombra para destacar */
-}
-
 /* --- Enlaces Generales --- */
 .datos-vehiculo-wrapper a,
 .consulta-vehiculo-wrapper a {
@@ -234,6 +204,25 @@ button:active,
     padding: 1em 1.5em;
     border-radius: 4px;
     margin-bottom: 1.5em;
+}
+
+#seleccion-piezas ul {
+    list-style: none;
+    padding: 0;
+}
+
+#seleccion-piezas li {
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+#seleccion-piezas button.eliminar {
+    background: red;
+    color: white;
+    border: none;
+    padding: 2px 5px;
+    cursor: pointer;
 }
 
 /* --- Responsividad --- */
