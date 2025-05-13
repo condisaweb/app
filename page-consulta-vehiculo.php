@@ -183,8 +183,9 @@ get_header();
             ?>
                 <div class="datos-vehiculo-wrapper">
                    
-                    <h2>Información del Vehículo: <?php echo esc_html($datos_vehiculo['titulo'] ?? $id_vehiculo_url); ?></h2>
+                    <h2>Información del Vehículo</h2>
 
+                    <p><strong>Título:</strong> <?php echo esc_html($datos_vehiculo['titulo'] ?? $id_vehiculo_url); ?></p>
                     <p><strong>Modelo Vehículo:</strong> <?php echo esc_html($datos_vehiculo['modelo_vehiculo']); ?></p>
                     <p><strong>Nº Bastidor:</strong> <?php echo esc_html($datos_vehiculo['bastidor']); ?></p>
                     <p><strong>Fecha Transformación:</strong> <?php echo esc_html($datos_vehiculo['fecha_transformacion']); ?></p>
