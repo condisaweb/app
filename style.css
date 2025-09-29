@@ -1,0 +1,217 @@
+/*
+Theme Name:		Configurator Child Theme
+Theme URI:		http://themeforest.net/user/innwithemes/portfolio
+Description: 	Woocommerce product customizer theme
+Author: 		Innwithemes and Amazee
+Author URI: 	http://innwithemes.com
+Template:		configurator
+Version: 		1.0
+*/
+/* ============================================= */
+/* CSS para Página Consulta Vehículo             */
+/* Inspirado en Pure.css / Layout tipo tabla   */
+/* ============================================= */
+
+/* --- Contenedores Generales --- */
+.datos-vehiculo-wrapper,
+.consulta-vehiculo-wrapper {
+    max-width: 960px; /* Ancho máximo del contenido */
+    margin: 2.5em auto; /* Centrado y con margen vertical */
+    padding: 2em 2.5em; /* Relleno interno */
+    border: 1px solid #e6e6e6; /* Borde sutil */
+    background-color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* Fuente limpia */
+    line-height: 1.6;
+    color: #333;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    /* ATENCIÓN: Borra el style="padding: 20px;" de estos divs en tu PHP */
+}
+
+/* --- Encabezados --- */
+.datos-vehiculo-wrapper h2,
+.consulta-vehiculo-wrapper h2,
+.datos-vehiculo-wrapper h3 {
+    color: #111;
+    margin-top: 0;
+    margin-bottom: 1.2em;
+    font-weight: 500;
+    line-height: 1.3;
+}
+.datos-vehiculo-wrapper h3 { /* Título "Equipamiento Instalado" */
+    margin-top: 2.5em;
+    border-bottom: 1px solid #e6e6e6;
+    padding-bottom: 0.6em;
+}
+.datos-vehiculo-wrapper h4 { /* Título de cada grupo de equipamiento */
+    margin-top: 0;
+    margin-bottom: 1em;
+    font-size: 1.15em;
+    color: #444;
+    font-weight: 600;
+}
+
+/* --- Información Principal del Vehículo (Aspecto Tabla) --- */
+.datos-vehiculo-wrapper > p { /* Párrafos directos que contienen la info principal */
+    margin-bottom: 0.9em;
+    padding-bottom: 0.9em;
+    border-bottom: 1px dotted #e0e0e0; /* Separador punteado */
+    display: flex; /* Usar flexbox para alinear etiqueta y valor */
+    flex-wrap: wrap; /* Permitir que el valor pase abajo en pantallas pequeñas */
+    gap: 0 1em; /* Espacio horizontal entre etiqueta y valor */
+}
+.datos-vehiculo-wrapper > p:last-of-type { /* Quitar borde del último párrafo */
+     border-bottom: none;
+     margin-bottom: 0; /* Ajustar margen si es necesario */
+}
+.datos-vehiculo-wrapper > p strong { /* Etiqueta (Modelo, Bastidor...) */
+    flex-basis: 180px; /* Ancho base para la etiqueta - AJUSTA SEGÚN NECESITES */
+    flex-shrink: 0; /* Evitar que la etiqueta se encoja */
+    font-weight: 600;
+    color: #111;
+    padding-right: 1em; /* Espacio a la derecha de la etiqueta */
+}
+
+/* --- Línea Separadora <hr> --- */
+.datos-vehiculo-wrapper hr {
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 2.5em 0;
+}
+
+/* --- Grupos de Equipamiento --- */
+/* Selecciona el div que envuelve cada grupo. Es MEJOR si añades una clase en PHP */
+/* ej: <div class="equipamiento-grupo"> en lugar del div con estilo inline */
+.datos-vehiculo-wrapper .entry-content > div[style*="border-bottom"] {
+     border-bottom: 1px solid #e6e6e6 !important; /* Borde sólido, !important para sobreescribir inline si no lo borras */
+     margin-bottom: 2em !important;
+     padding-bottom: 1.5em !important;
+     /* ATENCIÓN: Es MUCHO MEJOR añadir una clase como "equipamiento-grupo" a este div en PHP */
+     /* y borrar el style="..." inline. Luego usarías: .equipamiento-grupo { ... } */
+}
+
+.datos-vehiculo-wrapper p { /* Estilo general párrafos dentro de equipamiento */
+    margin-top: 0;
+    margin-bottom: 1em;
+}
+.datos-vehiculo-wrapper p strong { /* Etiqueta "Descripción:", "Imágenes:" */
+    font-weight: 600;
+    color: #111;
+    display: block; /* Poner en línea separada */
+    margin-bottom: 0.3em;
+}
+
+/* --- Galería de Imágenes --- */
+.galeria-equipamiento {
+    /* display: flex; flex-wrap: wrap; gap: 10px; */ /* Mantenido en PHP o definir aquí */
+    margin-top: 0.5em;
+}
+.galeria-equipamiento a {
+    display: inline-block;
+    line-height: 0;
+    text-decoration: none;
+    border: 1px solid #ddd; /* Borde alrededor del enlace */
+    transition: opacity 0.2s ease-in-out;
+    margin: 0 5px 5px 0; /* Pequeño margen */
+    background-color: #f9f9f9;
+}
+.galeria-equipamiento a:hover {
+    opacity: 0.8;
+    border-color: #bbb;
+}
+
+.equipamiento-thumb { /* La imagen miniatura */
+    max-width: 150px;  /* Tamaño miniatura - AJUSTA COMO QUIERAS */
+    height: auto;
+    display: block;
+    border: none; /* El borde ya está en el enlace <a> */
+    /* ATENCIÓN: Borra el style="..." de la etiqueta <img> en tu PHP */
+}
+
+/* --- Formulario de Consulta --- */
+.consulta-vehiculo-wrapper form p {
+    margin-bottom: 1.2em;
+}
+.consulta-vehiculo-wrapper label {
+    display: block;
+    margin-bottom: 0.4em;
+    font-weight: 600;
+    color: #333;
+}
+.consulta-vehiculo-wrapper input[type="password"],
+.consulta-vehiculo-wrapper input[type="text"] { /* Estilo para campos de texto/contraseña */
+    padding: 0.9em 0.8em;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    width: 100%;
+    max-width: 380px; /* Ancho máximo del campo */
+    box-sizing: border-box;
+    font-size: 1em;
+}
+.consulta-vehiculo-wrapper input[type="submit"] { /* Estilo botón */
+    display: inline-block;
+    padding: 0.9em 1.8em;
+    background-color: #0078e7; /* Azul similar a Pure */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    line-height: normal; /* Asegurar altura normal */
+}
+.consulta-vehiculo-wrapper input[type="submit"]:hover,
+.consulta-vehiculo-wrapper input[type="submit"]:focus {
+    background-color: #0056a3; /* Azul más oscuro al pasar el ratón */
+}
+
+/* --- Mensaje de Error --- */
+.consulta-vehiculo-wrapper p[style*="color: red"] {
+   background-color: #fceded; /* Fondo rojo pálido */
+   border: 1px solid #f7a7a3 !important; /* Borde rojo */
+   color: #a94442 !important; /* Texto rojo oscuro */
+   padding: 1em 1.5em !important; /* Relleno */
+   border-radius: 4px;
+   margin-top: 1.5em;
+   /* ATENCIÓN: Borra el style="..." de este párrafo en tu PHP */
+}
+
+/* --- Responsividad Básica --- */
+@media (max-width: 768px) {
+    .datos-vehiculo-wrapper,
+    .consulta-vehiculo-wrapper {
+        padding: 1.5em;
+        margin: 1.5em auto;
+    }
+    .datos-vehiculo-wrapper > p {
+        flex-direction: column; /* Poner etiqueta encima de valor */
+        gap: 0.2em 0; /* Espacio vertical */
+        align-items: flex-start; /* Alinear a la izquierda */
+    }
+    .datos-vehiculo-wrapper > p strong {
+        flex-basis: auto; /* Ancho automático */
+        min-width: 0;
+        padding-right: 0;
+        margin-bottom: 0.2em; /* Espacio bajo la etiqueta */
+    }
+     .equipamiento-thumb {
+         max-width: 120px; /* Miniaturas más pequeñas */
+    }
+}
+
+@media (max-width: 480px) {
+     .equipamiento-thumb {
+         max-width: 90px; /* Miniaturas aún más pequeñas */
+    }
+    .consulta-vehiculo-wrapper input[type="password"],
+    .consulta-vehiculo-wrapper input[type="text"],
+    .consulta-vehiculo-wrapper input[type="submit"] {
+         max-width: 100%; /* Ancho completo en pantallas muy pequeñas */
+         width: 100%;
+    }
+    .consulta-vehiculo-wrapper input[type="submit"] {
+        text-align: center;
+    }
+}

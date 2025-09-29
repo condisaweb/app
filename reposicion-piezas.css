@@ -1,0 +1,146 @@
+
+.reposicion-piezas-wrapper {
+    display: flex;
+    margin-bottom: 3em;
+    padding: 2.5em 3em;
+    border: 1px solid var(--border-light);
+    background-color: var(--background-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text-main);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.07);
+    border-radius: 5px;
+    flex-direction: column;
+    align-items: center;
+}
+.plano-rotulacion {
+    margin: 0 auto;
+    object-fit: contain; /* Escala la imagen sin distorsión */
+    max-width: 100%; /* Asegurar que no se desborde */
+    height: auto; /* Mantener proporción */
+    border-radius: 8px; /* Opcional: bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Opcional: sombra */
+}
+
+.formulario-rotulacion {
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+
+/* Estilos para el Modal */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro semitransparente */
+}
+
+/* Contenido del Modal */
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: left; /* Alinear todo el contenido a la izquierda */
+}
+
+/* Ocultar partes del modal por defecto */
+.modal-part {
+    display: none;
+}
+
+/* Mostrar solo la parte activa */
+.modal-part.active {
+    display: block;
+}
+
+/* Botones de navegación */
+.modal-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.modal-button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos del Encabezado */
+.header-content h1 {
+    font-size: 2rem;
+    margin-top: 10px; /* Reduce el espacio superior */
+    margin-bottom: 15px; /* Mantén un pequeño espacio inferior */
+    color: #333;
+}
+}
+
+.header-content p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.header-content ol {
+    text-align: left;
+    margin: 0 auto;
+    display: inline-block;
+    font-size: 1rem;
+    color: #666;
+    padding-left: 20px; /* Sangría para las listas */
+    margin: 10px 0;
+    list-style-type: decimal; /* Números para los elementos */
+}
+
+.header-content ol li {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #333; /* Diferenciar el texto de la lista con un color más oscuro */
+    font-weight: normal;
+    line-height: 1.6; /* Espaciado entre líneas */
+}
+
+/* Destacar el texto importante dentro de la lista */
+.header-content ol li strong {
+    color: #007bff; /* Color azul para destacar */
+    font-weight: bold;
+}
+
+/* Formulario rotulacion imagenes */
+#preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.preview-item img {
+    transition: transform 0.3s ease;
+}
+
+.preview-item img:hover {
+    transform: scale(1.05);
+}
+
+.preview-item button {
+    transition: background-color 0.3s ease;
+}
+
+.preview-item button:hover {
+    background-color: #ff3333;
+}

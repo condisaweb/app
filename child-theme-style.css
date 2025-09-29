@@ -1,9 +1,20 @@
-/* ============================================= */
-/* CSS para Página Consulta Vehículo             */
-/* Estilo Mejorado - Grises y Azules             */
-/* ============================================= */
+/*
+ * Theme Name:     Tu Tema Hijo
+ * Theme URI:      https://tudominio.com/
+ * Description:    Tema hijo para personalizar Tu Tema Padre.
+ * Author:         Tu Nombre
+ * Author URI:     https://tudominio.com/
+ * Template:       tu-tema-padre-slug  // Asegúrate de que este sea el slug de tu tema padre
+ * Version:        1.0.0
+ * Text Domain:    tu-tema-hijo
 
-/* --- Paleta de Colores Sugerida --- */
+-- */
+#page {
+    width: 101%;
+    overflow-x: hidden;
+
+}
+
 :root {
     --text-main: #333740; /* Gris oscuro principal */
     --text-secondary: #5a6270; /* Gris medio */
@@ -17,45 +28,20 @@
     --error-bg: #fceded;
     --error-border: #f7a7a3;
     --error-text: #a94442;
+    --text-dark: #282219; /* Nuevo color para la barra de resumen */
 }
 
-/* Estilos generales del formulario */
-.pure-form-stacked fieldset {
-    border: 1px solid #ddd; /* Borde ligero */
-    padding: 20px;
-    border-radius: 5px; /* Bordes redondeados */
-    background-color: #f9f9f9; /* Fondo claro */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra ligera */
-    margin: 20px 0;
+.header-wrap {
+    z-index: 9 !important; /* Reducir el z-index si es necesario */
 }
 
-/* Estilo del título del formulario */
-.pure-form-stacked legend {
-    font-size: 1.4em;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #333; /* Color oscuro */
+/* --- Seleccionar grupo de piezas (Para el mapa SVG interactivo) --- */
+.mapsvg-region.selected-region {
+    fill: #eb7474 !important; /* Cambiar el color al rojo */
+    pointer-events: all; /* Asegúrate de que los eventos táctiles funcionen */
 }
 
-/* Espaciado entre elementos */
-.pure-form-stacked label {
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #555; /* Color gris */
-}
-
-/* Estilo de los campos de entrada */
-.pure-input-1 {
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 4px;
-    font-size: 1em;
-    width: 100%; /* Asegura el ancho completo */
-    box-sizing: border-box; /* Alineación de bordes
-
-
-/* --- Contenedores Generales --- */
+/* --- Contenedores Generales y Estilos Base --- */
 .datos-vehiculo-wrapper,
 .consulta-vehiculo-wrapper {
     max-width: 960px;
@@ -119,52 +105,211 @@
     padding-right: 1em;
 }
 
-/* --- Grupos de Equipamiento --- */
-.equipamiento-grupo {
-    border-bottom: 1px solid var(--border-light);
-    margin-bottom: 2em;
-    padding-bottom: 2em;
-    background-color: var(--background-accent);
-    padding: 1.5em;
-    border-radius: 4px;
-}
-.equipamiento-grupo p {
-    margin-top: 0;
-    margin-bottom: 1em;
-    color: var(--text-secondary);
-}
-.equipamiento-grupo p strong {
-    font-weight: 600;
-    color: var(--text-label);
-    margin-bottom: 0.4em;
+/* --- Estilo para la tabla de piezas seleccionadas (si aplica en un modal) --- */
+#selected-groups-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 0.95em;
 }
 
-/* --- Galería de Imágenes --- */
-.galeria-equipamiento a {
+#selected-groups-table th, #selected-groups-table td {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 10px;
+    vertical-align: middle;
+}
+
+#selected-groups-table th {
+    background-color: #f4f4f4;
+    color: var(--text-label); /* Usa la variable de color */
+    font-weight: bold;
+}
+
+#selected-groups-table .remove-item-btn {
+    background-color: var(--danger-color);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
+    white-space: nowrap;
+    transition: background-color 0.3s ease;
+}
+
+#selected-groups-table .remove-item-btn:hover {
+    background-color: #c82333;
+}
+
+.group-row {
+    font-weight: bold;
+    background-color: var(--background-accent); /* Usa la variable para fondo suave */
+}
+
+.piece-row {
+    font-style: italic;
+    background-color: var(--background-main);
+}
+
+.remove-group-btn, .remove-piece-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px; /* Añadido border-radius */
+    transition: background-color 0.2s ease; /* Transición suave */
+}
+
+.remove-group-btn:hover, .remove-piece-btn:hover {
+    background-color: #d11a2a;
+}
+
+/* --- Grupos de Equipamiento y Tarjetas de Información --- */
+.equipamiento-lista-tarjetas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.equipamiento-card {
+    display: flex;
+    background: var(--background-main); /* Usa la variable de color principal */
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    overflow: hidden;
+    min-width: 280px;
+    width: 100%; /* Por defecto 100% para responsividad */
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    margin-bottom: 45px; /* Espaciado entre tarjetas, si no están en flex-wrap */
+}
+
+/* Asegura que las tarjetas ocupen el 100% en flex-wrap cuando hay espacio */
+.equipamiento-lista-tarjetas .equipamiento-card {
+    flex: 1 1 calc(50% - 12px); /* Dos columnas con un hueco de 24px */
+}
+
+/* Si quieres que algunas tarjetas vayan a 100% en el grid */
+.equipamiento-lista-tarjetas .full-width-card {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+
+.equipamiento-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+.equipamiento-card-img {
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 110px;
+    max-height: 180px;
+    overflow: hidden;
+    flex-shrink: 0; /* Evita que la imagen se encoja si el contenido es muy largo */
+}
+.equipamiento-card-img img {
+    max-width: 100%;
+    border-radius: 0; /* Los bordes redondeados se aplican al contenedor */
+}
+.equipamiento-card-content {
+    padding: 18px 20px 12px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    flex-grow: 1; /* Permite que el contenido ocupe el espacio restante */
+}
+.equipamiento-item-titulo p {
+    margin-bottom: 12px;
+    margin-top: 0;
+    line-height: 30px;
+    font-size: x-large;
+    color: var(--text-label); /* Usa la variable de color */
+    font-weight: 600; /* Asegura que sea negrita */
+}
+.equipamiento-card-descripcion {
+    color: var(--text-secondary); /* Usa la variable de color */
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+.equipamiento-grupo {
+    margin-bottom: 36px; /* Espaciado entre grupos de equipamiento */
+}
+.equipamiento-titulo {
+    font-size: 1.16rem;
+    font-weight: 700;
+    color: var(--text-label); /* Usa la variable de color */
+    margin-bottom: 16px;
+}
+.equipamiento-item-descripcion{
+    margin-bottom: 45px; 
+    margin-top: 15px;
+    color: var(--text-secondary);
+}
+.equipamiento.item { /* Clase genérica para ítems de equipamiento */
+    margin-bottom: 45px;
+    padding-bottom: 20px; /* Añadido padding para que el borde no quede pegado al texto */
+    border-bottom: 1px solid var(--border-light);
+}
+
+.equipamiento-modal-info {
+    background-color: #f9f9f9;
+    border-left: 4px solid #0073aa;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+.equipamiento-modal-info h3 {
+    margin-top: 0;
+    color: #0073aa;
+}
+.equipamiento-modal-info p {
+    margin-bottom: 5px;
+}
+.equipamiento-modal-info .image-container {
+    margin-top: 10px;
+    text-align: center;
+}
+.equipamiento-modal-info .image-container img {
+    max-width: 150px; /* Ajusta el tamaño según necesites */
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* --- Galería de Imágenes Generales (para Galería de Vehículo) --- */
+.galeria-vehiculo {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    margin-top: 1rem;
+}
+.galeria-vehiculo a {
     display: inline-block;
     line-height: 0;
     text-decoration: none;
     border: 2px solid transparent;
-    border-radius: 4px;
-    transition: border-color 0.2s ease-in-out;
-    margin: 0 6px 6px 0;
+    border-radius: 6px; /* Ajustado para que coincida con el img style */
+    transition: border-color 0.2s ease;
     overflow: hidden;
-    background-color: #eee;
 }
-.galeria-equipamiento a:hover {
+.galeria-vehiculo a:hover {
     border-color: var(--blue-primary);
 }
-.equipamiento-thumb {
+.galeria-vehiculo img {
+    max-width: 120px;
     height: auto;
-    display: block;
-    border: none;
-    transition: transform 0.2s ease-in-out;
-}
-.galeria-equipamiento a:hover .equipamiento-thumb {
-    transform: scale(1.05);
+    border-radius: 6px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+    display: block; /* Elimina espacio extra debajo de la imagen */
 }
 
-/* --- Formulario de Consulta --- */
+/* --- Formulario de Consulta (Acceso con clave) --- */
 .consulta-vehiculo-wrapper form {
     display: flex;
     flex-direction: column;
@@ -180,7 +325,7 @@
     border: 1px solid var(--border-medium);
     border-radius: 4px;
     width: 100%;
-    max-width: 400px;
+    max-width: 400px; /* Limita el ancho del input */
     font-size: 1em;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -191,7 +336,195 @@
     outline: none;
 }
 
-/* --- Botones Generales --- */
+/* --- Barra de Resumen (para el mapa interactivo) --- */
+.hidden {
+    display: none !important; /* Importante para asegurar que se oculte */
+}
+
+.barra-resumen-selecciones {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    color: #282219;
+    display: flex;
+    justify-content: space-between;
+    z-index: 1000;
+}
+
+.barra-resumen-selecciones p {
+    margin: 0;
+    font-size: 1.1em;
+}
+
+
+.plano-interactivo.hidden,
+.formulario-rotulacion.hidden {
+    display: none;
+}
+
+/* --- Popover de MapSVG --- */
+.mapsvg-popover {
+    position: absolute;
+    background: #0073aa;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    text-align: center;
+}
+
+.mapsvg-popover p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.mapsvg-popover .popover-close {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}
+
+/* --- Estilos para Modales (para Asistencia, etc.) --- */
+.modal {
+    display: none; /* Ocultarlo por defecto */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    overflow: auto; /* Permitir desplazamiento si el contenido lo requiere */
+    padding: 20px;
+    display: flex; /* Usar flexbox para centrar fácilmente */
+    align-items: center; /* Centrar verticalmente */
+    justify-content: center; /* Centrar horizontalmente */
+}
+
+.modal-content {
+    position: relative;
+    padding: 25px; /* Más padding para mejor diseño */
+    background: var(--background-main);
+    border-radius: 8px;
+    width: 90%;
+    margin: auto;
+    max-width: 600px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25); /* Sombra más prominente */
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+}
+
+/* Ocultar barra de scroll en navegadores modernos */
+.modal-content::-webkit-scrollbar {
+    display: none;
+}
+.modal-content {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px; /* Un poco más grande */
+    color: var(--text-secondary); /* Color del texto secundario */
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+.modal-close:hover {
+    color: var(--text-main);
+}
+
+/* Estilo de las tarjetas dentro del modal (ej: para asistencia) */
+.card-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.card {
+    width: 100%;
+    padding: 15px;
+    background: var(--blue-primary); /* Usa la variable de color principal */
+    color: white;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.modal-body {
+    font-size: 2rem; /* Cambia el tamaño del texto a 2rem */
+}
+
+#modal-body h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-label);
+    text-align: left;
+    margin-bottom: 15px;
+    font-family: 'Poppins', sans-serif; /* Asegúrate de que Poppins esté cargada si la usas */
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--border-light); /* Borde de la variable */
+    padding-bottom: 5px;
+    text-transform: math-auto;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h4,
+.btn-pedir {
+    margin: 0;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    background-color: var(--blue-primary);
+    color: #fff;
+    border-radius: 8px;
+}
+
+.btn-circular {
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    text-align: center;
+    line-height: 28px;
+    font-size: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-medium); /* Usa la variable de color */
+    background-color: var(--blue-primary);
+    color: #fff;
+    transition: background 0.2s, border 0.2s;
+}
+
+.btn-circular:hover {
+    background: var(--background-accent); /* Un color de fondo más claro */
+    border-color: var(--text-main); /* Un color de borde más oscuro */
+    color: var(--blue-primary); /* Mantener el color del texto */
+}
+
+/* --- Botones Generales de Submit/Acción --- */
 button,
 .consulta-vehiculo-wrapper input[type="submit"] {
     display: inline-block;
@@ -216,23 +549,93 @@ button:active,
     transform: translateY(0px);
 }
 
-/* Botón "Eliminar" en rojo */
-.pure-button.remove-piece {
-    background-color: #ff4d4d; /* Rojo */
-    color: white; /* Texto en blanco */
-    border: none; /* Sin bordes */
-    border-radius: 4px; /* Bordes redondeados */
-    font-size: 0.9em; /* Tamaño de letra */
-    padding: 0.5em 1em; /* Espaciado interno */
-    cursor: pointer; /* Cambiar el cursor al hover */
-    transition: background-color 0.2s ease-in-out; /* Transición de color suave */
+/* Botones específicos */
+.btn-asistencia { /* Botón principal de "Asistencia para Reparación" */
+    background-color: var(--blue-primary);
+    color: white;
+    border: none;
+    padding: 12px 24px; /* Más padding para que sea más prominente */
+    cursor: pointer;
+    border-radius: 8px; /* Bordes más redondeados */
+    margin-top: 15px;
+    font-size: 1.1em;
+    font-weight: 600;
+    display: inline-block; /* Permitir que sea inline si se necesita, pero mantener las propiedades de bloque */
+    text-align: center;
+    text-decoration: none; /* Asegura que no tenga subrayado si es un <a> */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
 }
 
-.pure-button.remove-piece:hover {
-    background-color: #cc0000; /* Rojo más oscuro al pasar el mouse */
+.btn-asistencia:hover {
+    background-color: var(--blue-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
 }
 
-/* --- Mensajes de Error --- */
+.btn-asistencia:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+a.btn-asistencia { /* Sobreescribe el color del enlace si se usa como botón */
+    color: white !important;
+}
+
+#btn-contacto { /* Botón amarillo de contacto */
+    background-color: #ffc107; /* Amarillo */
+    color: #333; /* Texto gris oscuro */
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+#btn-contacto:hover {
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+}
+#btn-contacto:active {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: translateY(2px);
+}
+
+#btn-whatsapp { /* Botón verde de WhatsApp */
+    background-color: #25D366; /* Verde de WhatsApp oficial */
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+#btn-whatsapp:hover {
+    background-color: #1DA851; /* Un verde un poco más oscuro */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+}
+#btn-whatsapp:active {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: translateY(2px);
+}
+
+.mensaje-horario {
+    text-align: center;
+    background: #fffbe6;
+    color: #b48d00;
+    border: 1px solid #ffe58f;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-bottom: 18px;
+    margin-top: 18px;
+}
+
+/* --- Mensajes de Error/Éxito (Generales) --- */
 .consulta-vehiculo-wrapper .error-message {
     background-color: var(--error-bg);
     border: 1px solid var(--error-border);
@@ -242,6 +645,299 @@ button:active,
     margin-bottom: 1.5em;
 }
 
+#message-container { /* Contenedor para mensajes de página (ej. en el formulario de solicitud) */
+    margin: 20px 0;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    position: relative;
+    z-index: 1000;
+}
+
+.page-message {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    font-weight: bold;
+    opacity: 1;
+    transition: opacity 0.6s ease-out;
+}
+
+.page-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.page-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+/* Estilos para el overlay de carga */
+#loading-spinner {
+    position: absolute; /* O 'fixed' si quieres que cubra toda la ventana */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente oscuro */
+    display: flex; /* Para centrar el contenido */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    z-index: 1000; /* Asegurarse de que esté por encima de otros elementos */
+    flex-direction: column; /* Para apilar el spinner y el texto */
+    color: white; /* Color del texto (si añades texto) */
+    font-family: sans-serif;
+}
+
+/* Styles for the loading spinner */
+#loading-spinner {
+    position: absolute; /* O 'fixed' si quieres que cubra toda la ventana */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente oscuro */
+    display: flex; /* Para centrar el contenido */
+    flex-direction: column; /* Para apilar el spinner y el texto */
+    justify-content: center; /* Centrar verticalmente */
+    align-items: center; /* Centrar horizontalmente */
+    z-index: 9999; /* Asegura que esté por encima de la mayoría de los elementos */
+    color: white; /* Color del texto del spinner */
+    font-size: 1.2em;
+    border-radius: 8px; /* Si está dentro de un contenedor con bordes */
+}
+
+#loading-spinner::after {
+    content: '';
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #fff; /* Color del spinner que gira */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Estilos para mensajes locales (ya los tienes probablemente, pero por si acaso) */
+.page-message {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.page-message.success {
+    background-color: #28a745;
+}
+
+.page-message.error {
+    background-color: #dc3545;
+}
+
+.page-message.warning {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.page-message.info {
+    background-color: #17a2b8;
+}
+
+.page-message .btn-close {
+    /* Estilos para el botón de cerrar mensaje */
+}
+
+/* --- Botón "Ir hacia atrás" (en modales o formularios) --- */
+.btn-back {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background: #6c757d; /* Gris de Bootstrap */
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-back:hover {
+    background: #5a6268;
+}
+
+/* Contenedor Flexbox para las imágenes */
+.image-gallery-container {
+    display: flex; /* Habilita Flexbox */
+    gap: 15px; /* Espacio entre las imágenes */
+    justify-content: center; /* Centra las imágenes horizontalmente */
+    align-items: flex-start; /* Alinea las imágenes en la parte superior */
+    flex-wrap: wrap; /* Permite que las imágenes se envuelvan a la siguiente línea en pantallas pequeñas */
+    margin: 20px 0; /* Espacio superior e inferior */
+}
+
+/* Estilo para cada elemento de imagen dentro del contenedor Flexbox */
+.image-item {
+    flex: 1; /* Permite que cada imagen ocupe espacio equitativo */
+    min-width: 150px; /* Ancho mínimo para que no se hagan demasiado pequeñas */
+    max-width: 48%; /* Para dos imágenes, cada una ocupa casi la mitad con un poco de margen */
+    text-align: center; /* Centra la imagen dentro de su propio contenedor */
+}
+
+.image-item img {
+    max-width: 100%; /* Asegura que la imagen se ajuste a su contenedor */
+    height: auto; /* Mantiene la proporción de la imagen */
+    display: block; /* Elimina espacio extra debajo de la imagen */
+    margin: 0 auto; /* Centra la imagen si su contenedor es más grande */
+    border-radius: 5px; /* Bordes ligeramente redondeados (opcional) */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave (opcional) */
+}
+
+/* Ajustes para imágenes de tipo amplificador/etilómetro (si tienen esa clase) */
+.amplificador-img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Estilos para el contenedor de imágenes en el modal */
+.modal-images-container {
+    display: flex; /* Activa Flexbox */
+    flex-wrap: wrap; /* Permite que las imágenes salten a la siguiente línea si no hay espacio */
+    gap: 10px; /* Espacio entre las imágenes (puedes ajustar el valor) */
+    justify-content: center; /* Centra las imágenes horizontalmente si hay espacio */
+    align-items: flex-start; /* Alinea las imágenes en la parte superior */
+    margin-top: 15px; /* Espacio superior para separar del título/texto */
+    margin-bottom: 15px; /* Espacio inferior */
+}
+
+/* Opcional: Estilos para cada item de imagen para controlar su tamaño */
+.modal-images-container .image-item {
+    /* Puedes definir un ancho máximo para cada imagen, por ejemplo */
+    max-width: 48%; /* Para dos imágenes por fila, con un pequeño gap. Ajusta según necesites. */
+    flex-basis: auto; /* Permite que el tamaño se adapte */
+}
+
+/* Ajustes para la imagen dentro del contenedor (ya los tienes en JS, pero el CSS puede sobrescribir) */
+.modal-images-container .amplificador-img {
+    max-width: 100%; /* Asegura que la imagen no exceda el ancho de su contenedor (.image-item) */
+    height: auto; /* Mantiene la proporción */
+    display: block; /* Asegura que la imagen ocupe el ancho completo de su contenedor */
+    /* Elimina el margin-bottom que tenías en JS si lo aplicas en el .image-item o aquí */
+}
+
+/* Opcional: para que se vean bien en pantallas pequeñas, puedes hacer que cada imagen ocupe el 100% */
+@media (max-width: 600px) {
+    .modal-images-container .image-item {
+        max-width: 100%; /* Una imagen por fila en pantallas pequeñas */
+    }
+}
+
+/* --- Lightbox (Para imágenes en detalles o galería) --- */
+.lightbox-link {
+    display: inline-block;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    margin-top: 10px;
+}
+.lightbox-link:hover {
+    transform: scale(1.05);
+}
+
+.lightbox-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo para el popup del lightbox */
+.lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.lightbox-overlay img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    object-fit: contain;
+}
+
+/* --- Estilos para el formulario de Reposición de Piezas (si aplica) --- */
+/* Ajustar el espaciado general */
+form label { /* Etiquetas en formularios, diferente al label de inputs */
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    color: var(--text-label); /* Usa la variable de color */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 5rem;
+}
+
+/* Etiquetas del formulario (más específicas para inputs) */
+form label {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+/* Select y otros inputs en formularios */
+form select,
+form input[type="text"],
+form input[type="email"],
+form input[type="tel"],
+form textarea,
+form button[type="submit"] { /* Para un submit específico del formulario */
+    padding: 10px;
+    border: 1px solid var(--border-medium); /* Usa la variable de color */
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form select:focus,
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form input[type="tel"]:focus,
+form textarea:focus {
+    border-color: var(--blue-primary);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.25);
+}
+
+
+/* Estilos para el área de selección de piezas (si aplica) */
 #seleccion-piezas ul {
     list-style: none;
     padding: 0;
@@ -251,33 +947,703 @@ button:active,
     margin: 5px 0;
     display: flex;
     justify-content: space-between;
+    align-items: center; /* Centrar verticalmente */
+    background-color: var(--background-accent);
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid var(--border-light);
 }
 
 #seleccion-piezas button.eliminar {
-    background: red;
+    background: #dc3545; /* Color de error */
     color: white;
     border: none;
-    padding: 2px 5px;
+    padding: 5px 10px;
     cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.85em;
+    transition: background-color 0.2s ease;
+}
+#seleccion-piezas button.eliminar:hover {
+    background: #c82333;
 }
 
-/* --- Responsividad --- */
+/* --- Estilos para la plantilla de Confirmación de Solicitud (IMPORTANTE) --- */
+
+.datos-vehiculo-wrapper.confirmacion-page {
+    padding: 3em; /* Ajusta el padding para que coincida con otros wrappers */
+    margin-bottom: 40px;
+}
+
+.confirmacion-card {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 30px 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background-color: var(--background-main);
+}
+
+.confirmacion-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px auto;
+    font-size: 40px;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.confirmacion-icon-wrapper.success {
+    background-color: #28a745; /* Verde para éxito */
+}
+
+.confirmacion-icon-wrapper.error {
+    background-color: #dc3545; /* Rojo para error */
+}
+
+.confirmacion-icon {
+    line-height: 1;
+    font-weight: bold;
+}
+
+.equipamiento-card-titulo { /* Ajuste del estilo para la tarjeta de confirmación principal */
+    font-size: 1.8em; /* Un poco más grande para el título principal */
+    margin-top: 0.5em;
+    margin-bottom: 0.8em;
+    color: var(--text-label);
+    border-bottom: none; /* Elimina la línea inferior si no es necesaria aquí */
+    padding-bottom: 0;
+}
+
+.equipamiento-card-descripcion.confirmacion-message {
+    font-size: 1.1em;
+    color: var(--text-main);
+    margin-bottom: 10px;
+}
+
+.equipamiento-card-descripcion.confirmacion-submessage {
+    font-size: 0.95em;
+    color: var(--text-secondary);
+    margin-top: 5px;
+    line-height: 1.5;
+}
+
+/* Estilos para listas dentro de las tarjetas de datos */
+.grupos-seleccionados-lista,
+.piezas-seleccionadas {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 10px;
+}
+
+.grupos-seleccionados-lista li {
+    background-color: var(--background-accent);
+    border: 1px solid var(--border-light);
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.grupos-seleccionados-lista li strong {
+    color: var(--text-label);
+    margin-bottom: 5px;
+}
+
+.piezas-seleccionadas {
+    margin-top: 5px;
+    padding-left: 15px;
+}
+
+.piezas-seleccionadas li {
+    font-size: 0.9em;
+    color: var(--text-secondary);
+    padding: 3px 0;
+    position: relative;
+}
+
+.piezas-seleccionadas li::before {
+    content: '•';
+    color: var(--blue-primary);
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+/* Estilos para la galería de imágenes adjuntas */
+.galeria-adjunta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+.galeria-adjunta img {
+    border: 1px solid var(--border-light);
+    box-shadow: 0 1px 5px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease-in-out;
+}
+
+.galeria-adjunta img:hover {
+    transform: translateY(-3px);
+}
+.woocommerce-products-header {
+    display: none;
+}
+
+/* --- Media Query para Dispositivos Móviles (hasta 768px de ancho) --- */
 @media (max-width: 768px) {
-    .image-map-container {
-        flex-direction: column; /* Apila la imagen y el formulario verticalmente */
-    }
-    .image-map {
-        max-width: 100%; /* Imagen ocupa todo el ancho en móviles */
-    }
+    ..reposicion-piezas-wrapper,
+    .datos-vehiculo-wrapper,
     .consulta-vehiculo-wrapper {
-        max-width: 100%; /* Formulario ocupa todo el ancho en móviles */
-        margin-top: 20px; /* Espacio entre la imagen y el formulario */
+        padding: 1.5em 1.5em; /* Reducir padding en móviles */
+        margin: 2em auto;
+    }
+    .equipamiento-lista-tarjetas {
+        flex-direction: column;
+        gap: 16px; /* Ajusta el gap para una sola columna */
+    }
+    .equipamiento-card {
+        flex-direction: column; /* Apila imagen y contenido */
+        max-width: 100%;
+        margin-bottom: 25px; /* Espaciado ajustado para una sola columna */
+    }
+    .equipamiento-lista-tarjetas .equipamiento-card {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .equipamiento-card-img {
+        max-width: 100%;
+        max-height: 150px; /* Un poco más pequeña en móviles */
+    }
+    .equipamiento-card-content {
+        padding: 16px 12px 12px 12px;
+    }
+    .datos-vehiculo-wrapper > p strong {
+        flex-basis: 100%; /* Las etiquetas ocupan todo el ancho */
+        margin-bottom: 0.5em;
+        padding-right: 0;
+    }
+    .consulta-vehiculo-wrapper input[type="text"],
+    .consulta-vehiculo-wrapper input[type="password"] {
+        max-width: 100%;
+    }
+    .barra-resumen-selecciones {
+        flex-direction: column;
+        text-align: center;
+        padding: 10px;
+    }
+    .barra-resumen-selecciones p {
+        margin-bottom: 10px;
+    }
+    .modal-content {
+        width: 95%;
+        margin: 2% auto;
+    }
+    form select,
+    form input,
+    form button {
+        font-size: 16px;
     }
 }
+
 @media (max-width: 480px) {
     .consulta-vehiculo-wrapper input[type="submit"] {
         font-size: 1em;
         padding: 0.8em 1em;
     }
+    .equipamiento-card-titulo {
+        font-size: 1.5em; /* Un poco más pequeño para pantallas muy pequeñas */
+    }
 }
 
+/* --- Media Query para Escritorio (y tablets grandes, a partir de 769px) --- */
+@media (min-width: 769px) {
+
+    .reposicion-piezas-wrapper {
+        flex-direction: row; /* Coloca la imagen y el formulario uno al lado del otro */
+        justify-content: center; /* Centra el contenido horizontalmente */
+        align-items: flex-start; /* Alinea los elementos al inicio (arriba) */
+        gap: 30px; /* Espacio entre la imagen y el formulario */
+        max-width: 1200px; /* Limita el ancho total en escritorio */
+        padding: 2.5em 3em; /* Padding para escritorio */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .imagen-interactiva-wrapper {
+        width: 60%; /* La imagen interactiva ocupa el 60% del espacio */
+        margin-bottom: 0; /* No se necesita margen inferior aquí */
+    }
+
+    #plano-interactivo-container {
+        overflow-x: hidden; /* Oculta el scroll si no es necesario en desktop */
+        max-width: 700px; /* Limita el tamaño del plano en escritorio para que no sea inmenso */
+        margin-bottom: 20px;
+    }
+
+    /* --- Estilos para la barra de resumen (Escritorio - STATIC) --- */
+    .barra-resumen-selecciones {
+        position: static; /* Ya no es fixed, se coloca en el flujo normal */
+        width: 100%; /* Ajusta su ancho al contenido o al flex-item */
+        max-width: 400px;
+        margin: 20px auto 0 auto;
+        flex-direction: column; /* Vuelve a la disposición en fila */
+        justify-content: center; /* Espacia el contador y el botón */
+        align-items: center; /* Alinea verticalmente */
+        padding: 15px 25px; /* Más padding para escritorio */
+        border-radius: 8px; /* Bordes redondeados */
+        box-shadow: 0 2px 10px rgba(0,0,0,0.15); /* Sombra más pronunciada */
+        border-top: none; /* Eliminar borde superior */
+        text-align: center;
+    }
+
+    .barra-resumen-selecciones p {
+        margin: 0; /* Elimina el margen inferior que se añadió para móvil */
+    }
+
+    .formulario-rotulacion {
+        width: 40%; /* El formulario ocupa el 40% del espacio */
+        padding-bottom: 20px; /* No necesita padding extra por la barra fija */
+        max-width: 500px; /* Mantener un ancho razonable para el formulario */
+    }
+
+    /* Modal de bienvenida/ayuda (ajustes para escritorio) */
+    .modal-content {
+        width: 70%; /* Más ancho en escritorio */
+        max-width: 700px; /* Máximo aún más grande para el modal */
+    }
+
+    /* Ajuste para el texto de las listas en el modal */
+    .header-content ol {
+        padding-left: 30px; /* Más sangría para mejor lectura en escritorio */
+    }
+}
+/* --- Estilos específicos para la página de reposición de piezas --- */
+.reposicion-piezas-wrapper {
+    display: flex;
+    flex-direction: column; /* Por defecto, apilados verticalmente */
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto 3em auto;
+    padding: 2.5em 3em; /* Padding para escritorio, ajustado en móvil por media query */
+    border: 1px solid var(--border-light);
+    background-color: var(--background-main);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.07);
+    border-radius: 5px;
+    align-items: center; /* Centrar elementos horizontalmente en columna */
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text-main);
+}
+/* Wrapper para la imagen interactiva (plano) */
+.imagen-interactiva-wrapper {
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column; /* Apila el plano y la barra si está dentro */
+    align-items: center; /* Centra el plano y la barra horizontalmente */
+}
+
+/* Contenedor del shortcode del plano interactivo */
+#plano-interactivo-container {
+    width: 100%;
+    overflow-x: auto; /* Permite scroll horizontal si la imagen es muy grande (móvil) */
+    -webkit-overflow-scrolling: touch; /* Suaviza el scroll en iOS */
+    margin-bottom: 20px; /* Espacio entre el plano y la barra de resumen */
+    display: flex;
+    justify-content: center; /* Centrar el SVG dentro del contenedor */
+}
+.plano-rotulacion {
+    margin: 0 auto;
+    object-fit: contain; /* Escala la imagen sin distorsión */
+    max-width: 100%; /* Asegurar que no se desborde */
+    height: auto; /* Mantener proporción */
+    border-radius: 8px; /* Opcional: bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Opcional: sombra */
+}
+.plano-rotulacion svg,
+.plano-rotulacion img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+.formulario-rotulacion {
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding-bottom: 70px; /* Deja espacio para la barra fija en móvil */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.formulario-rotulacion h3 {
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* Información del vehículo en el formulario */
+.informacion-vehiculo {
+    background-color: #e9ecef;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+.informacion-vehiculo p {
+    margin: 5px 0;
+    font-size: 0.95em;
+}
+.informacion-vehiculo strong {
+    color: #555;
+}
+
+/* Estilos para los elementos del formulario */
+.formulario-rotulacion label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.formulario-rotulacion input[type="text"],
+.formulario-rotulacion input[type="tel"],
+.formulario-rotulacion textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+.formulario-rotulacion textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.formulario-rotulacion input[type="file"] {
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #fefefe;
+    cursor: pointer;
+}
+.formulario-rotulacion small {
+    display: block;
+    font-size: 0.85em;
+    color: #777;
+    margin-bottom: 15px;
+}
+
+.formulario-rotulacion button[type="submit"] {
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    margin-top: 20px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.formulario-rotulacion button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* Estilos para el Modal */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro semitransparente */
+}
+
+/* Contenido del Modal */
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: left; /* Alinear todo el contenido a la izquierda */
+}
+
+/* Ocultar partes del modal por defecto */
+.modal-part {
+    display: none;
+}
+
+/* Mostrar solo la parte activa */
+.modal-part.active {
+    display: block;
+}
+
+/* Botones de navegación */
+.modal-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.modal-button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos del Encabezado */
+.header-content h1 {
+    font-size: 2rem;
+    margin-top: 10px; /* Reduce el espacio superior */
+    margin-bottom: 15px; /* Mantén un pequeño espacio inferior */
+    color: #333;
+}
+}
+
+.header-content p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.header-content ol {
+    text-align: left;
+    margin: 0 auto;
+    display: inline-block;
+    font-size: 1rem;
+    color: #666;
+    padding-left: 20px; /* Sangría para las listas */
+    margin: 10px 0;
+    list-style-type: decimal; /* Números para los elementos */
+}
+
+.header-content ol li {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #333; /* Diferenciar el texto de la lista con un color más oscuro */
+    font-weight: normal;
+    line-height: 1.6; /* Espaciado entre líneas */
+}
+
+/* Destacar el texto importante dentro de la lista */
+.header-content ol li strong {
+    color: #007bff; /* Color azul para destacar */
+    font-weight: bold;
+}
+
+/* Formulario rotulacion imagenes */
+#preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.preview-item img {
+    transition: transform 0.3s ease;
+}
+
+.preview-item img:hover {
+    transform: scale(1.05);
+}
+
+.preview-item button {
+    transition: background-color 0.3s ease;
+}
+
+.preview-item button:hover {
+    background-color: #ff3333;
+}
+
+/* Nuevo contenedor para alinear el botón y el wrapper principal */
+.main-page-content-wrapper {
+    max-width: 1200px; /* Igual al max-width de reposicion-piezas-wrapper para alineación */
+    margin: 0 auto; /* Centrar este contenedor en la página */
+    padding: 20px; /* Padding para que el contenido no esté pegado a los bordes en móviles */
+    box-sizing: border-box; /* Incluir padding en el cálculo del ancho */
+}
+
+/* Estilo base para el botón de "Volver" */
+.btn-page-back {
+    margin: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    background-color: #5a6268;
+}
+
+.btn-page-back:hover {
+    background-color: #5a6268;
+}
+
+/* --- Estilos para el Formulario de Solicitud de Material en la Modal --- */
+
+/* Contenedor principal de los campos de contacto */
+.contact-fields-wrapper {
+    background-color: #f8f9fa; /* Un fondo ligeramente diferente para destacar */
+    border: 1px solid #e2e6ea;
+    border-radius: 8px; /* Bordes suaves */
+    padding: 25px 20px; /* Espaciado interno generoso */
+    margin-bottom: 30px; /* Espacio debajo del formulario antes del botón */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+}
+
+/* Estilo general para cada grupo de formulario (label + input) */
+.contact-fields-wrapper .form-group {
+    margin-bottom: 18px; /* Espacio entre los campos */
+}
+
+/* Etiquetas de los campos */
+.contact-fields-wrapper label {
+    display: block; /* Asegura que cada label esté en su propia línea */
+    margin-bottom: 8px; /* Espacio entre label y su input */
+    font-weight: 600; /* Un poco más de negrita */
+    color: #343a40; /* Color de texto más oscuro */
+    font-size: 0.95rem; /* Tamaño de fuente ligeramente más pequeño para labels */
+}
+
+/* Indicador de campo requerido */
+.contact-fields-wrapper .required {
+    color: #dc3545; /* Rojo para el asterisco de requerido */
+    font-size: 0.9rem; /* Un poco más pequeño que el label */
+    margin-left: 4px;
+}
+
+/* Inputs de texto y teléfono, y textarea */
+.contact-fields-wrapper .form-control {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    padding: 12px 15px; /* Relleno interno */
+    border: 1px solid #ced4da; /* Borde estándar */
+    border-radius: 6px; /* Bordes redondeados */
+    font-size: 1rem; /* Tamaño de fuente legible */
+    line-height: 1.5; /* Altura de línea para legibilidad */
+    color: #495057; /* Color de texto */
+    background-color: #fff; /* Fondo blanco */
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Transición suave en foco */
+}
+
+.contact-fields-wrapper .form-control::placeholder {
+    color: #6c757d; /* Color del texto de placeholder */
+    opacity: 0.7; /* Ligeramente transparente */
+}
+
+.contact-fields-wrapper .form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff; /* Borde azul suave en foco */
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Sombra de enfoque azul */
+}
+
+/* Ajuste específico para el textarea */
+.contact-fields-wrapper textarea.form-control {
+    min-height: 90px; /* Altura mínima para el textarea */
+    resize: vertical; /* Permite redimensionar solo verticalmente */
+}
+
+/* --- Estilos para el Selector de Cantidad en la Modal --- */
+
+.cantidad-selector-wrapper {
+    /* Aplica el tamaño de fuente al contenedor principal del selector */
+    font-size: 2rem;
+}
+
+.cantidad-selector-wrapper label {
+    font-size: 1.8rem; /* Puedes hacer el label ligeramente más pequeño si es necesario */
+    font-weight: bold;
+    color: #333;
+}
+
+.cantidad-selector-wrapper .btn-circular.btn-mini {
+    /* Ajusta el tamaño de los botones circulares si se ven desproporcionados */
+    width: 2.5em;  /* Ejemplo: 2.5 veces el font-size de su padre (2rem * 2.5 = 5rem) */
+    height: 2.5em; /* Mantenerlos cuadrados */
+    font-size: 1.5rem; /* El texto dentro del botón podría ser 1.5rem */
+    line-height: 1; /* Para centrar el texto verticalmente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cantidad-selector-wrapper #cantidad-valor {
+    /* El valor numérico de la cantidad podría ser aún más grande */
+    font-size: 2.5rem; /* Un poco más grande para destacarlo */
+    font-weight: bold;
+    color: #007bff; /* Color para el número */
+}
+
+/* Estilos para las galerías dentro de las tarjetas de equipamiento */
+.galeria-equipamiento-item {
+    display: flex;
+    gap: 8px; /* Espacio entre las imágenes */
+    flex-wrap: wrap; /* Las imágenes se ajustan a la siguiente línea si no hay espacio */
+    margin-top: 20px; /* Espacio arriba del bloque de imágenes */
+    justify-content: flex-start; /* Alinea las imágenes al inicio */
+    align-items: flex-start;
+}
+
+.equipamiento-card-img-galeria {
+    width: auto; 
+    height: 150px; 
+    overflow: hidden;
+    border-radius: 6px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1); /* Usar rgba para mejor control */
+    flex-shrink: 0; /* Evita que los ítems se encojan en un flex container */
+}
+
+
+.equipamiento-card-img-galeria img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    border-radius: 6px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.equipamiento-card-img-galeria img:hover {
+    transform: scale(1.05); /* Pequeño efecto al pasar el ratón */
+}
+
+.equipamiento-card-content ol {
+  padding-left: 20px; /* Adjust as needed */
+}
+
+.equipamiento-card-content li.equipamiento-item {
+  margin-bottom: 5px; /* Adjust spacing between list items */
+}

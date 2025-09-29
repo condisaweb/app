@@ -9,10 +9,9 @@
                 <option value="mecanica-electronica">1. Mecánica o electrónica del vehículo</option>
                 <option value="elementos-policiales">2. Elementos policiales en el vehículo</option>
             </select>
-            <button type="button" class="btn-siguiente" data-siguiente="pregunta-2">Siguiente</button>
         </div>
 
-        <!-- Pregunta 2 (solo aparece si selecciona "Elementos policiales en el vehículo") -->
+        <!-- Pregunta 2 -->
         <div class="pregunta" id="pregunta-2" style="display: none;">
             <label for="categoria-elementos-policiales">¿Qué categoría específica deseas consultar?</label>
             <select id="categoria-elementos-policiales" name="categoria-elementos-policiales" required>
@@ -23,7 +22,6 @@
                 <option value="rotulacion">2.4. Rotulación</option>
                 <option value="equipamiento">2.5. Equipamiento</option>
             </select>
-            <button type="button" class="btn-siguiente" data-siguiente="resultado-busqueda">Buscar Solución</button>
         </div>
 
         <!-- Resultado de la búsqueda -->
@@ -34,33 +32,3 @@
         </div>
     </form>
 </div>
-
-<script>
-    // Control del itinerario de preguntas
-    document.querySelectorAll('.btn-siguiente').forEach(button => {
-        button.addEventListener('click', function () {
-            const siguientePregunta = this.dataset.siguiente;
-
-            // Ocultar la pregunta actual
-            this.closest('.pregunta').style.display = 'none';
-
-            // Mostrar la siguiente pregunta o resultados
-            const siguienteElemento = document.getElementById(siguientePregunta);
-            if (siguienteElemento) {
-                siguienteElemento.style.display = 'block';
-            }
-        });
-    });
-
-    // Mostrar pregunta 2 solo si selecciona "Elementos policiales en el vehículo"
-    document.getElementById('tipo-problema').addEventListener('change', function () {
-        const valorSeleccionado = this.value;
-        const pregunta2 = document.getElementById('pregunta-2');
-
-        if (valorSeleccionado === 'elementos-policiales') {
-            pregunta2.style.display = 'block';
-        } else {
-            pregunta2.style.display = 'none';
-        }
-    });
-</script>
